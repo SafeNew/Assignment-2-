@@ -27,7 +27,7 @@ def get_selected_row(event):
     selected_tuple = List.get(Index)
     print(selected_tuple)
     return(selected_tuple)
-#Front-End
+#Front End
 App = Tk()
 App.title("Telephone-book Application")
 App.geometry("620x240")
