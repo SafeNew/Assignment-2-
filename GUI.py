@@ -3,19 +3,23 @@ from tkinter import messagebox
 #Back-End
 import json
 profile = json.load(open("profile.json", "r"))
+#print((profile))
 def ViewAllCommand():
+    profile = json.load(open("profile.json", "r"))
     List.delete(0, END)
     for i in profile.keys():
         List.insert(END, profile[i])
 def SearchCommand():
     name_text = Search_text_box.get()
+    profile = json.load(open("profile.json", "r"))
     notFound = True
     for i in profile.keys():
         if name_text == "":
             messagebox.showerror(title="No Text Enter", message="Please Enter Text")
             break
         elif name_text == profile[i]["NAME"][:len(name_text)]:
-            List.delete(0, END)
+            if notFound:
+                List.delete(0, END)
             List.insert(END, profile[i])
             notFound = False
         if notFound and i == "p4":
@@ -25,9 +29,34 @@ def get_selected_row(event):
     global selected_tuple
     Index = List.curselection()[0]
     selected_tuple = List.get(Index)
-    print(selected_tuple)
-    return(selected_tuple)
+    selected_dict = eval(selected_tuple)
+    #print(type(selected_dict))
+    #print(selected_dict)
+    ID_text_box.delete(0, END)
+    ID_text_box.insert(END, selected_dict["ID"])
+    Name_text_box.delete(0, END)
+    Name_text_box.insert(END, selected_dict["NAME"])
+    TelNumber_text_box.delete(0, END)
+    TelNumber_text_box.insert(END, selected_dict["TELNUMBER"])
+    LineID_text_box.delete(0, END)
+    LineID_text_box.insert(END , selected_dict["LINE_ID"])
+    Email_text_box.delete(0, END)
+    Email_text_box.insert(END, selected_dict["EMAIL_KMUTNB"])
+    return(selected_dict)
+def UpdateCommand():
+    profileSelect = ["p1", "p2", "p3", "p4"]
+    Index = List.curselection()[0]
+    profile = json.load(open("profile.json", "r"))
+    profile[profileSelect[Index]]["ID"] = ID_text_box.get()
+    profile[profileSelect[Index]]["NAME"] = Name_text_box.get()
+    profile[profileSelect[Index]]["TELNUMBER"] = TelNumber_text_box.get()
+    profile[profileSelect[Index]]["LINE_ID"] = LineID_text_box.get()
+    profile[profileSelect[Index]]["EMAIL_KMUTNB"] = Email_text_box.get()
+    with open("profile.json", "w") as file:
+        json.dump(profile, file, indent=4)
 #Front End
+from tkinter import *
+from tkinter import messagebox 
 App = Tk()
 App.title("Telephone-book Application")
 App.geometry("620x240")
@@ -35,7 +64,7 @@ App.geometry("620x240")
 ViewAll = Button(App, text = "View All", command = ViewAllCommand)
 ViewAll.grid(row = 0, column = 2)
 
-Update = Button(App, text = "Update")
+Update = Button(App, text = "Update", command = UpdateCommand)
 Update.grid(row = 0, column = 1)
 
 Search = Button(App, text = "Search", command = SearchCommand)
