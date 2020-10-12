@@ -1,9 +1,8 @@
 from tkinter import *
 from tkinter import messagebox 
-#Back-End
+#-----------------------------------------------------------Back End-----------------------------------------------------------
 import json
 profile = json.load(open("profile.json", "r"))
-#print((profile))
 def ViewAllCommand():
     profile = json.load(open("profile.json", "r"))
     List.delete(0, END)
@@ -30,8 +29,6 @@ def get_selected_row(event):
     Index = List.curselection()[0]
     selected_tuple = List.get(Index)
     selected_dict = eval(selected_tuple)
-    #print(type(selected_dict))
-    #print(selected_dict)
     ID_text_box.delete(0, END)
     ID_text_box.insert(END, selected_dict["ID"])
     Name_text_box.delete(0, END)
@@ -54,9 +51,7 @@ def UpdateCommand():
     profile[profileSelect[Index]]["EMAIL_KMUTNB"] = Email_text_box.get()
     with open("profile.json", "w") as file:
         json.dump(profile, file, indent=4)
-#Front End
-from tkinter import *
-from tkinter import messagebox 
+#-----------------------------------------------------------Front End-----------------------------------------------------------
 App = Tk()
 App.title("Telephone-book Application")
 App.geometry("620x240")
