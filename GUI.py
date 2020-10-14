@@ -9,18 +9,19 @@ def ViewAllCommand():
     for i in profile.keys():
         List.insert(END, profile[i])
 def SearchCommand():
+    List.delete(0, END)
     name_text = Search_text_box.get()
+    if name_text == "":
+        messagebox.showerror(title="No Text Enter", message="Please Enter Text")
+        return
     profile = json.load(open("profile.json", "r"))
     notFound = True
     for i in profile.keys():
-        if name_text == "":
-            messagebox.showerror(title="No Text Enter", message="Please Enter Text")
-            break
-        elif name_text == profile[i]["NAME"][:len(name_text)]:
-            if notFound:
-                List.delete(0, END)
+        if name_text == profile[i]["NAME"][:len(name_text)]:
             List.insert(END, profile[i])
             notFound = False
+        else: 
+            List.insert(END, "\n ")
         if notFound and i == "p4":
             List.delete(0, END)
             messagebox.showerror(title="", message="Not found")
